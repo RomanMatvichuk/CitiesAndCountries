@@ -8,9 +8,6 @@ async function getCities() {
     
     cities.sort((a, b) => a.countryid - b.countryid  || b.population - a.population);
     countries.sort((a, b) => (a.countryname < b.countryname) ? -1 : 1);
-
-    console.log(cities);
-    console.log(countries);
     
     var htmlLines = "";
 
