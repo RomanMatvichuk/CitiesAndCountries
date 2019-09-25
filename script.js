@@ -1,29 +1,31 @@
-fetch('stad.json')
-    .then(response => response.json())
-    .catch(error => document.write(error))
-    .then(function(myJson){
-        myJson.sort((a, b) => a.countryid - b.countryid  || b.population - a.population);
-        console.log(myJson);
-    })
+async function getCities() {
+    
+    var stad = fetch('stad.json').then(response => response.json()).catch(error => document.write(error));    
+    var land = fetch('land.json').then(response => response.json()).catch(error => document.write(error));
+    
+    var cities = await Promise.all([stad]).then(([stad]) => {return stad});
+    var countries = await Promise.all([land]).then(([land]) => {return land});
+    
+    cities.sort((a, b) => a.countryid - b.countryid  || b.population - a.population);
+    countries.sort((a, b) => (a.countryname < b.countryname) ? -1 : 1);
 
-fetch('land.json')
-    .then(response => response.json())
-    .catch(error => document.write(error))
-    .then(function(myJson){
-        myJson.sort((a, b) => (a.countryname < b.countryname) ? -1 : 1);
-        console.log(myJson);
-    })
+    console.log(cities);
+    console.log(countries);
+    
+    var htmlLines = "";
 
-//console.log(cities);
-//console.log(countries);
+    for (var i = 0; i < countries.length; i++) {
 
-/*var htmlLines = "";
+        htmlLines += "<li><h3 style='margin: 15px 0 5px 0'>" + countries[i].countryname + "</h3></li>";
 
-for (let i = 0; i < countries.length; i++) {
-    htmlLines += "<li><h3>" + countries[i].countryname + "</h3></li>";
-        for (let i1 = 0; countries[i].id = cities[i1].countryid; i1++) {
-            htmlLines += "<li>" + cities[i1].stadname + " med " + cities[i1].population + " invånare</li>";            
+        for (var j = 0; j < cities.length; j++) {
+            if (countries[i].id === cities[j].countryid){
+                htmlLines += "<li>" + cities[j].stadname + " med " + cities[j].population + " invånare</li>";
+            }            
         } 
-}
+    }
 
-document.getElementById("list").innerHTML = htmlLines;*/
+    document.getElementById("list").innerHTML = htmlLines;
+}
+    
+getCities();
