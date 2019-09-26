@@ -1,10 +1,11 @@
 async function getCities() {
     
-    var stad = fetch('stad.json').then(response => response.json()).catch(error => document.write(error));    
-    var land = fetch('land.json').then(response => response.json()).catch(error => document.write(error));
-    
-    var cities = await Promise.all([stad]).then(([stad]) => {return stad});
-    var countries = await Promise.all([land]).then(([land]) => {return land});
+    var cities = await fetch('stad.json')
+        .then(response => response.json())
+        .catch(error => document.write(error));
+    var countries = await fetch('land.json')
+        .then(response => response.json())
+        .catch(error => document.write(error));
     
     cities.sort((a, b) => a.countryid - b.countryid  || b.population - a.population);
     countries.sort((a, b) => (a.countryname < b.countryname) ? -1 : 1);
